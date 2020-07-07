@@ -1,7 +1,7 @@
 #!/bin/sh
 
 /bin/echo "Starting Puppetboard ..."
-gunicorn -b 0.0.0.0:8000 puppetboard.app:app  &
+gunicorn -b 0.0.0.0:${PUPPETBOARD_PORT} --workers="${PUPPETBOARD_WORKERS:-1}" -e SCRIPT_NAME="${PUPPETBOARD_URL_PREFIX:-}" --access-logfile=- puppetboard.app:app  &
 
 if [[ ${ADMIN_USER} ]] && [[ ${ADMIN_PASS} ]]; then
     /bin/echo "Generating htpasswd file from env ..."
